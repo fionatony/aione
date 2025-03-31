@@ -1,0 +1,128 @@
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+.container-fluid {
+    max-width: 1400px;
+}
+
+/* Models Table */
+#models-list .model-name {
+    font-weight: 500;
+}
+
+/* Terminal Output */
+#command-output {
+    font-family: monospace;
+    font-size: 0.9rem;
+    background-color: #212529;
+    color: #f8f9fa;
+    padding: 15px;
+    white-space: pre;
+}
+
+/* Chat Styles */
+.chat-message {
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: #f0f2f5;
+    margin-left: auto;
+    border-top-right-radius: 0;
+}
+
+.model-message {
+    background-color: #e9ecef;
+    margin-right: auto;
+    border-top-left-radius: 0;
+}
+
+/* Installation Progress */
+#installation-progress {
+    margin-top: 1rem;
+}
+
+#installation-status {
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Quick Commands */
+.quick-command {
+    margin-right: 0.25rem;
+}
+
+/* Utils */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Hover effects */
+.btn:hover {
+    opacity: 0.9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0,123,255,0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chat-message {
+        max-width: 90%;
+    }
+}
+
+/* Custom spinner for loading states */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}
+
+/* Delete button styling */
+.delete-model {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white !important;
+}
+
+.delete-model:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: white !important;
+}
+
+/* Model suggestions */
+.model-suggestion {
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.model-suggestion:hover {
+  background-color: #0d6efd;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress bar styles */
+.progress {
+  height: 20px;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  transition: width 0.5s ease;
+} 

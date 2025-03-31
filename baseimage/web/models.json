@@ -1,0 +1,87 @@
+{
+  "Small Models (3-4B)": ["llama3:8b", "gemma3:4b", "phi3:3.8b", "qwen2.5:4b"],
+  "Medium Models (7-14B)": [
+    "llama3.2:11b",
+    "gemma3:12b",
+    "phi4:14b",
+    "qwen2.5:7b",
+    "deepseek-r1:7b",
+    "mistral:7b"
+  ],
+  "Large Models (30B+)": ["llama3.1:70b", "qwen2.5:72b"],
+  "Embedding Models": ["nomic-embed-text:latest", "mxbai-embed-large:latest"],
+  "Specialized Models": [
+    "codellama:7b",
+    "llava:13b",
+    "neuralchat:7b",
+    "dolphin-mixtral:8x7b"
+  ],
+  "popular": [
+    "gemma3:4b",
+    "deepseek-r1:7b",
+    "qwen2.5:7b",
+    "llama3.2:3b",
+    "gemma3:12b",
+    "phi4:14b",
+    "deepseek-r1:14b",
+    "qwen2.5:14b",
+    "llama3.1:8b"
+  ],
+  "code": ["codellama:7b", "codellama:13b", "codellama:34b"],
+  "multimodal": ["llava:7b", "llava:13b", "bakllava:7b"],
+  "quantized": [
+    "llama2:7b-chat-q4_K_M",
+    "llama2:13b-chat-q4_K_M",
+    "mistral:7b-instruct-q4_K_M"
+  ],
+  "deepseek": [
+    "deepseek:7b",
+    "deepseek:7b-chat",
+    "deepseek:7b-instruct",
+    "deepseek:14b",
+    "deepseek:14b-chat",
+    "deepseek:14b-instruct"
+  ],
+  "gemma": ["gemma:2b", "gemma:7b", "gemma:7b-it", "gemma:7b-it-lora"],
+  "llama3": ["llama3:3b", "llama3:8b", "llama3:8b-instruct", "llama3:8b-chat"],
+  "phi4": ["phi4:14b", "phi4:14b-chat", "phi4:14b-instruct"],
+  "qwen2.5": [
+    "qwen2.5:7b",
+    "qwen2.5:7b-chat",
+    "qwen2.5:14b",
+    "qwen2.5:14b-chat"
+  ],
+  "mistral": [
+    "mistral:7b",
+    "mistral:7b-instruct",
+    "mistral:7b-openorca",
+    "mistral:7b-v0.2",
+    "mistral:7b-v0.3"
+  ],
+  "neural-chat": [
+    "neural-chat:7b",
+    "neural-chat:13b",
+    "neural-chat:70b",
+    "neural-chat:7b-v3-1",
+    "neural-chat:13b-v3-1",
+    "neural-chat:70b-v3-1"
+  ],
+  "phi": ["phi:2.7b", "phi:2.7b-chat", "phi:2.7b-instruct", "phi:2.7b-v2"],
+  "nous-hermes": [
+    "nous-hermes:7b",
+    "nous-hermes:13b",
+    "nous-hermes:70b",
+    "nous-hermes:7b-v1.5",
+    "nous-hermes:13b-v1.5",
+    "nous-hermes:70b-v1.5"
+  ],
+  "solar": ["solar:10.7b", "solar:10.7b-instruct", "solar:10.7b-code-instruct"],
+  "dolphin-phi": ["dolphin-phi:2.7b", "dolphin-phi:2.7b-v2.5"],
+  "openchat": ["openchat:7b", "openchat:3.5", "openchat:3.5-1210"],
+  "orca-mini": ["orca-mini:3b", "orca-mini:3b-gguf"],
+  "starling-lm": [
+    "starling-lm:7b",
+    "starling-lm:7b-beta",
+    "starling-lm:7b-beta-v2"
+  ]
+}

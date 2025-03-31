@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ollama Web Interface</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <header class="bg-dark text-white p-3 mb-4">
+        <h1 class="display-5">Ollama Web Interface</h1>
+        <p class="lead">Manage and interact with your Ollama LLM models</p>
+      </header>
+
+      <div class="row">
+        <!-- Main content tabs -->
+        <div class="col-12">
+          <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="models-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#models-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="models-tab-pane"
+                aria-selected="true"
+              >
+                Models
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="terminal-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#terminal-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="terminal-tab-pane"
+                aria-selected="false"
+              >
+                Terminal
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="chat-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#chat-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="chat-tab-pane"
+                aria-selected="false"
+              >
+                Chat
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <!-- Models Tab -->
+            <div
+              class="tab-pane fade show active"
+              id="models-tab-pane"
+              role="tabpanel"
+              aria-labelledby="models-tab"
+              tabindex="0"
+            >
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card-header">
+                      <h5 class="card-title">Install Model</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-3">
+                        <label for="model-input" class="form-label"
+                          >Model Name</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="model-input"
+                            placeholder="e.g., llama3:7b"
+                          />
+                          <button
+                            class="btn btn-primary"
+                            id="install-model-btn"
+                          >
+                            Install
+                          </button>
+                        </div>
+                        <div class="form-text">
+                          Enter the full model name (e.g., llama3:7b)
+                        </div>
+                      </div>
+
+                      <div id="model-suggestions" class="mt-3">
+                        <!-- Model suggestions will be populated here -->
+                      </div>
+
+                      <div id="installation-progress" class="d-none">
+                        <div class="progress mb-3">
+                          <div
+                            class="progress-bar progress-bar-striped progress-bar-animated"
+                            role="progressbar"
+                            style="width: 0%"
+                          ></div>
+                        </div>
+                        <p id="installation-status" class="mb-0">
+                          Initializing...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="card mb-4">
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center"
+                    >
+                      <h5 class="card-title mb-0">Installed Models</h5>
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        id="refresh-models-btn"
+                      >
+                        Refresh
+                      </button>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Size</th>
+                              <th>Modified</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody id="models-list">
+                            <tr>
+                              <td colspan="4" class="text-center">
+                                Loading models...
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- GPU Information Card -->
+                  <div class="card mb-4">
+                    <div class="card-header">
+                      <h5 class="card-title">GPU Information</h5>
+                    </div>
+                    <div class="card-body">
+                      <div id="gpu-info">
+                        <p>Loading GPU information...</p>
+                      </div>
+                      <button
+                        class="btn btn-sm btn-outline-secondary mt-2"
+                        id="refresh-gpu-btn"
+                      >
+                        Refresh GPU Info
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terminal Tab -->
+            <div
+              class="tab-pane fade"
+              id="terminal-tab-pane"
+              role="tabpanel"
+              aria-labelledby="terminal-tab"
+              tabindex="0"
+            >
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="card-title">Terminal</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="command-input" class="form-label"
+                      >Command</label
+                    >
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="command-input"
+                        placeholder="Enter command..."
+                      />
+                      <button class="btn btn-primary" id="execute-command-btn">
+                        Execute
+                      </button>
+                    </div>
+                    <div class="form-text">
+                      Enter Ollama commands (e.g., ollama list)
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="command-output" class="form-label"
+                      >Output</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="command-output"
+                      rows="10"
+                      readonly
+                    ></textarea>
+                  </div>
+
+                  <h6>Quick Commands</h6>
+                  <div class="btn-group mb-3">
+                    <button
+                      class="btn btn-sm btn-outline-secondary quick-command"
+                      data-command="ollama list"
+                    >
+                      List Models
+                    </button>
+                    <button
+                      class="btn btn-sm btn-outline-secondary quick-command"
+                      data-command="ollama ps"
+                    >
+                      Running Models
+                    </button>
+                    <button
+                      class="btn btn-sm btn-outline-secondary quick-command"
+                      data-command="ollama --help"
+                    >
+                      Ollama Help
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Tab -->
+            <div
+              class="tab-pane fade"
+              id="chat-tab-pane"
+              role="tabpanel"
+              aria-labelledby="chat-tab"
+              tabindex="0"
+            >
+              <div class="card mb-4">
+                <div class="card-header">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h5 class="card-title">Chat with Models</h5>
+                    </div>
+                    <div class="col-auto">
+                      <select class="form-select" id="chat-model-select">
+                        <option value="">Select a model</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body" style="min-height: 400px">
+                  <div
+                    id="chat-messages"
+                    class="mb-3"
+                    style="height: 300px; overflow-y: auto"
+                  >
+                    <div class="text-center text-muted p-5">
+                      <p>Select a model and start chatting</p>
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <textarea
+                      class="form-control"
+                      id="chat-input"
+                      placeholder="Type your message..."
+                      rows="2"
+                    ></textarea>
+                    <button
+                      class="btn btn-primary"
+                      id="send-message-btn"
+                      disabled
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
