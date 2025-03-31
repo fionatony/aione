@@ -8,9 +8,9 @@ AIONE (AI One) is an integrated AI development docker image that combines multip
 
 ## Interface Screenshots
 
-|              Models Tab              |               Terminal Tab               |             Chat Tab             |
-| :----------------------------------: | :--------------------------------------: | :------------------------------: |
-| ![Models Tab](images/models_tab.png) | ![Terminal Tab](images/terminal_tab.png) | ![Chat Tab](images/chat_tab.png) |
+|              Models Tab              |               Terminal Tab               |             Chat Tab             |               Models Search                |
+| :----------------------------------: | :--------------------------------------: | :------------------------------: | :----------------------------------------: |
+| ![Models Tab](images/models_tab.png) | ![Terminal Tab](images/terminal_tab.png) | ![Chat Tab](images/chat_tab.png) | ![Models Search](images/models_search.png) |
 
 ## Features
 
@@ -24,6 +24,7 @@ AIONE (AI One) is an integrated AI development docker image that combines multip
 - **Easy Installation**: One-click setup scripts for Windows, Mac, and Linux
 - **Web Interface**: Modern, responsive UI for model management and chat
 - **Flexible Deployment**: Run on both GPU and CPU-only environments
+- **Advanced Model Search**: Powerful search functionality to discover and filter Ollama models with real-time results
 
 ## Quick Start
 

@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <div class="d-flex flex-wrap gap-2">`;
 
         // Display up to 6 models from this category
-        availableModels[category.key].slice(0, 6).forEach((model) => {
+        availableModels[category.key].slice(0, 12).forEach((model) => {
           html += `<button class="btn btn-sm btn-outline-secondary model-suggestion" 
                     data-model="${model}">${model}</button>`;
         });
@@ -282,9 +282,239 @@ document.addEventListener("DOMContentLoaded", function () {
     const showAllButton = document.getElementById("show-all-models");
     if (showAllButton) {
       showAllButton.addEventListener("click", function () {
-        alert("This feature will be implemented in a future update.");
+        showAllModelsModal();
       });
     }
+  }
+
+  // Show all models in a modal
+  function showAllModelsModal() {
+    const modalContent = document.getElementById("all-models-content");
+    let html = "";
+
+    // Add search functionality with both local and remote search
+    html = `
+      <div class="mb-4">
+        <div class="input-group">
+          <input type="text" class="form-control" id="model-search" 
+                 placeholder="Search models..." autocomplete="off">
+          <button class="btn btn-outline-secondary" type="button" id="search-ollama">
+            <i class="bi bi-search"></i> Search Ollama
+          </button>
+        </div>
+        <div class="form-text">Search locally or on Ollama's website</div>
+      </div>
+      <div id="search-results" class="d-none">
+        <h6 class="mb-3">Search Results</h6>
+        <div id="ollama-search-results" class="mb-4"></div>
+      </div>
+      <div id="models-list-container">
+        <h6 class="mb-3">Available Models</h6>
+        <div class="d-flex flex-wrap gap-2">
+    `;
+
+    // Add all available models as buttons
+    let allModels = [];
+    for (const category in availableModels) {
+      if (Array.isArray(availableModels[category])) {
+        allModels = allModels.concat(availableModels[category]);
+      }
+    }
+
+    // Remove duplicates and sort
+    allModels = [...new Set(allModels)].sort();
+
+    // Add model buttons
+    allModels.forEach((model) => {
+      html += `<button class="btn btn-sm btn-outline-secondary model-suggestion" 
+                data-model="${model}">${model}</button>`;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    modalContent.innerHTML = html;
+
+    // Add event listeners to suggestion buttons in modal
+    modalContent.querySelectorAll(".model-suggestion").forEach((button) => {
+      button.addEventListener("click", function () {
+        const modelName = this.getAttribute("data-model");
+        modelInput.value = modelName;
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("allModelsModal")
+        );
+        modal.hide();
+      });
+    });
+
+    // Add local search functionality
+    const searchInput = document.getElementById("model-search");
+    if (searchInput) {
+      searchInput.addEventListener("input", function () {
+        const searchTerm = this.value.toLowerCase();
+        const buttons = modalContent.querySelectorAll(".model-suggestion");
+        const searchResults = document.getElementById("search-results");
+
+        // Hide search results if search is empty
+        if (!searchTerm) {
+          searchResults.classList.add("d-none");
+          return;
+        }
+
+        // Show search results section
+        searchResults.classList.remove("d-none");
+
+        // Filter local models
+        buttons.forEach((button) => {
+          const modelName = button.getAttribute("data-model").toLowerCase();
+          if (modelName.includes(searchTerm)) {
+            button.style.display = "inline-block";
+          } else {
+            button.style.display = "none";
+          }
+        });
+
+        // If search term is long enough, trigger Ollama search
+        if (searchTerm.length >= 2) {
+          searchOllamaModels(searchTerm);
+        }
+      });
+    }
+
+    // Add Ollama search button functionality
+    const searchOllamaBtn = document.getElementById("search-ollama");
+    if (searchOllamaBtn) {
+      searchOllamaBtn.addEventListener("click", function () {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+          searchOllamaModels(searchTerm);
+        }
+      });
+    }
+
+    // Show the modal
+    const modal = new bootstrap.Modal(
+      document.getElementById("allModelsModal")
+    );
+    modal.show();
+  }
+
+  // Search models on Ollama's website
+  function searchOllamaModels(searchTerm) {
+    const searchResults = document.getElementById("ollama-search-results");
+    searchResults.innerHTML =
+      '<div class="text-center"><div class="spinner-border spinner-border-sm me-2" role="status"></div>Searching...</div>';
+
+    // Use our backend API to proxy the request
+    fetch(`/api/models/search?q=${encodeURIComponent(searchTerm)}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          searchResults.innerHTML = `<div class="text-danger">Error: ${data.error}</div>`;
+          return;
+        }
+
+        // Create an array to store model information
+        const modelInfoArray = [];
+
+        try {
+          // Parse the HTML content from our backend
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data.html, "text/html");
+
+          // Find all model items using the specific structure
+          const modelItems = doc.querySelectorAll("li[x-test-model]");
+
+          modelItems.forEach((item) => {
+            // Get model name from the h2 element
+            const modelNameElement = item.querySelector(
+              "h2 span[x-test-search-response-title]"
+            );
+            if (!modelNameElement) return;
+
+            const modelName = modelNameElement.textContent.trim();
+
+            // Get model description
+            const descriptionElement = item.querySelector("p.max-w-lg");
+            const description = descriptionElement
+              ? descriptionElement.textContent.trim()
+              : "";
+
+            // Get all size spans
+            const sizeSpans = item.querySelectorAll("span[x-test-size]");
+
+            if (sizeSpans.length > 0) {
+              // For each size, create a full model name
+              sizeSpans.forEach((span) => {
+                const size = span.textContent.trim().toLowerCase();
+                const fullModelName = `${modelName}:${size}`;
+                modelInfoArray.push({
+                  name: fullModelName,
+                  description: description,
+                });
+              });
+            } else {
+              // If no sizes found, just use the model name
+              modelInfoArray.push({
+                name: modelName,
+                description: description,
+              });
+            }
+          });
+
+          // Deduplicate models by name
+          const uniqueModels = Array.from(
+            new Set(modelInfoArray.map((model) => model.name))
+          ).map((name) => {
+            return modelInfoArray.find((model) => model.name === name);
+          });
+
+          // Display results
+          if (uniqueModels.length > 0) {
+            let resultsHtml = '<div class="list-group">';
+            uniqueModels.slice(0, 8).forEach((model) => {
+              resultsHtml += `
+                <button class="list-group-item list-group-item-action model-suggestion" 
+                        data-model="${model.name}">
+                  <strong>${model.name}</strong>
+                  <div class="small text-muted">${model.description}</div>
+                </button>
+              `;
+            });
+            resultsHtml += "</div>";
+            searchResults.innerHTML = resultsHtml;
+
+            // Add click handlers to the search result buttons
+            searchResults
+              .querySelectorAll(".model-suggestion")
+              .forEach((button) => {
+                button.addEventListener("click", function () {
+                  const modelName = this.getAttribute("data-model");
+                  modelInput.value = modelName;
+                  const modal = bootstrap.Modal.getInstance(
+                    document.getElementById("allModelsModal")
+                  );
+                  modal.hide();
+                });
+              });
+          } else {
+            searchResults.innerHTML =
+              '<div class="text-muted">No models found. Try a different search term.</div>';
+          }
+        } catch (err) {
+          console.error("Error parsing search results:", err);
+          searchResults.innerHTML =
+            '<div class="text-warning">Unable to parse search results. Try using a more specific search term.</div>';
+        }
+      })
+      .catch((error) => {
+        console.error("Error searching Ollama models:", error);
+        searchResults.innerHTML =
+          '<div class="text-danger">Error searching models. Please try again later.</div>';
+      });
   }
 
   // Update the models table with current data

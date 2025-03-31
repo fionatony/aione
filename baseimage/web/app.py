@@ -167,6 +167,25 @@ def get_gpu_info():
         logger.error(f"Error getting GPU info: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+@app.route("/api/models/search")
+def search_models():
+    try:
+        query = request.args.get("q", "")
+        if not query:
+            return jsonify({"error": "Search query is required"}), 400
+
+        # Use requests to fetch from Ollama's website
+        response = requests.get(f"https://ollama.com/search?q={query}")
+        response.raise_for_status()  # Raise an exception for bad status codes
+
+        return jsonify({
+            "html": response.text
+        })
+    except requests.RequestException as e:
+        return jsonify({"error": f"Error fetching search results: {str(e)}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Unexpected error: {str(e)}"}), 500
+
 # Entry point
 if __name__ == "__main__":
     # Parse command line arguments
