@@ -17,12 +17,20 @@ The foundation of AIONE, combining essential services for AI development:
 - **GPU Acceleration**: Built-in NVIDIA GPU support
 - **Web Interface**: Modern UI for model management
 
-**Docker Hub**: [aione/baseimage](https://hub.docker.com/r/aione/baseimage)
+![Models Management Interface](baseimage/images/models_tab.png)
+
+**Docker Hub**: [aione1/baseimage](https://hub.docker.com/r/aione1/baseimage)
 
 **Quick Start**:
 ```bash
-docker pull aione/baseimage:latest
-docker run -d --name aione --gpus all -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione/baseimage:latest
+# Pull the image
+docker pull aione1/baseimage:latest
+
+# Run with GPU support (if you have NVIDIA GPU)
+docker run -d --name aione --gpus all -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
+
+# Run on CPU-only systems
+docker run -d --name aione -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
 ```
 
 ### More Images Coming Soon
