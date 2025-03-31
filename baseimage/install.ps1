@@ -115,7 +115,7 @@ function Install-Aione {
 AIONE has been successfully installed and started!
 Access the web interface at: http://localhost:7071
 Services available:
-   - Ollama API: http://localhost:11435
+   - Ollama API: http://localhost:11434
    - PostgreSQL: localhost:5433
    - Weaviate: http://localhost:8081
 "@ -ForegroundColor Green

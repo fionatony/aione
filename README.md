@@ -27,10 +27,10 @@ The foundation of AIONE, combining essential services for AI development:
 docker pull aione1/baseimage:latest
 
 # Run with GPU support (if you have NVIDIA GPU)
-docker run -d --name aione --gpus all -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
+docker run -d --name aione --gpus all -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
 
 # Run on CPU-only systems
-docker run -d --name aione -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
+docker run -d --name aione -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione1/baseimage:latest
 ```
 
 ### More Images Coming Soon
@@ -84,4 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [GitHub Repository](https://github.com/fionatony/aione)
 - [Docker Hub](https://hub.docker.com/r/aione)
 - [Documentation](https://github.com/fionatony/aione/tree/main/docs)
-- [Issues](https://github.com/fionatony/aione/issues) 
+- [Issues](https://github.com/fionatony/aione/issues)

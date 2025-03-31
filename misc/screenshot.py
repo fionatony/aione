@@ -67,7 +67,7 @@ def build_and_run_docker():
     run_process = subprocess.run(
         ["docker", "run", "-d", "--name", "aione"] + 
         gpu_flag + 
-        ["-p", "11435:11435", "-p", "5433:5433", "-p", "8081:8081", "-p", "7071:7071", "aione:latest"], 
+        ["-p", "11434:11434", "-p", "5433:5433", "-p", "8081:8081", "-p", "7071:7071", "aione:latest"], 
         check=True
     )
     

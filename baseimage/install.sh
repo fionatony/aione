@@ -84,7 +84,7 @@ docker rm aione 2>/dev/null || true
 
 # Start container with appropriate GPU settings
 echo "🚀 Starting AIONE container..."
-if ! docker run -d --name aione $GPU_ARG -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest; then
+if ! docker run -d --name aione $GPU_ARG -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest; then
     echo "❌ Failed to start container"
     cleanup 1
 fi
@@ -97,7 +97,7 @@ sleep 10
 echo -e "\n✅ AIONE has been successfully installed and started!"
 echo "📝 Access the web interface at: http://localhost:7071"
 echo "🔧 Services available:"
-echo "   - Ollama API: http://localhost:11435"
+echo "   - Ollama API: http://localhost:11434"
 echo "   - PostgreSQL: localhost:5433"
 echo "   - Weaviate: http://localhost:8081"
 

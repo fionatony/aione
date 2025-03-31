@@ -16,7 +16,7 @@ AIONE (AI One) is an integrated AI development docker image that combines multip
 
 - **Comprehensive AI Docker Image**: Built on the official Ollama image with enhanced features
 - **Integrated Services**:
-  - **Ollama**: For AI model management and inference with custom port 11435
+  - **Ollama**: For AI model management and inference with custom port 11434
   - **PostgreSQL**: For structured data storage and application state
   - **Weaviate**: For vector database and semantic search capabilities
 - **GPU Acceleration**: Automatic detection and utilization of NVIDIA GPUs
@@ -112,10 +112,10 @@ If you prefer to build and run manually:
 2. Run the container:
    ```bash
    # Without GPU support
-   docker run -d --name aione -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest
+   docker run -d --name aione -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest
    
    # With GPU support
-   docker run -d --name aione --gpus all -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest
+   docker run -d --name aione --gpus all -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 aione:latest
    ```
 
 ## Verifying Installation
@@ -186,7 +186,7 @@ docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
 ```bash
 docker run -d --name aione \
     --gpus all \
-    -p 11435:11435 \
+    -p 11434:11434 \
     -p 5433:5433 \
     -p 8081:8081 \
     -p 7071:7071 \
@@ -198,7 +198,7 @@ docker run -d --name aione \
 Once running, the following services are available:
 
 ### Ollama API
-- URL: http://localhost:11435
+- URL: http://localhost:11434
 - Use for model management and inference
 - Compatible with the Ollama client library
 
@@ -244,7 +244,7 @@ To persist data across container recreations, mount these directories to your ho
 ```bash
 docker run -d --name aione \
     --gpus all \
-    -p 11435:11435 -p 5433:5433 -p 8081:8081 -p 7071:7071 \
+    -p 11434:11434 -p 5433:5433 -p 8081:8081 -p 7071:7071 \
     -v aione-data:/root/.ollama \
     -v aione-postgres:/service/postgresql \
     -v aione-weaviate:/service/weaviate/data \
@@ -264,10 +264,10 @@ If you encounter issues with the installation or operation:
 2. Ensure ports are not already in use:
    ```bash
    # Linux/Mac
-   netstat -tuln | grep -E '11435|5433|8081|7071'
+   netstat -tuln | grep -E '11434|5433|8081|7071'
    
    # Windows
-   netstat -ano | findstr "11435 5433 8081 7071"
+   netstat -ano | findstr "11434 5433 8081 7071"
    ```
 
 3. Check for GPU detection issues:
